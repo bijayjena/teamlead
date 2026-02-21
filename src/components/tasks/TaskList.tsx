@@ -1,6 +1,8 @@
 import { Task, Developer, TaskStatus } from '@/types';
 import { TaskCard } from './TaskCard';
 import { cn } from '@/lib/utils';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   DragDropContext,
   Droppable,
@@ -15,6 +17,7 @@ interface TaskListProps {
   onTaskStatusChange?: (taskId: string, newStatus: TaskStatus) => void;
   onTaskAssign?: (taskId: string, developerId: string | null) => void;
   onTaskUpdate?: (taskId: string, updates: Partial<Task>) => void;
+  onAddTask?: (status: TaskStatus) => void;
 }
 
 const statusOrder: TaskStatus[] = ['in-progress', 'todo', 'review', 'backlog', 'done'];
@@ -27,7 +30,7 @@ const statusLabels: Record<TaskStatus, string> = {
   done: 'Done',
 };
 
-export const TaskList = ({ tasks, developers, groupBy = 'status', onTaskStatusChange, onTaskAssign, onTaskUpdate }: TaskListProps) => {
+export const TaskList = ({ tasks, developers, groupBy = 'status', onTaskStatusChange, onTaskAssign, onTaskUpdate, onAddTask }: TaskListProps) => {
   const getAssignee = (assigneeId?: string) => 
     developers.find((dev) => dev.id === assigneeId);
 
@@ -63,14 +66,26 @@ export const TaskList = ({ tasks, developers, groupBy = 'status', onTaskStatusCh
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {statusOrder.map((status) => (
-            <div key={status} className="space-y-3">
+            <div key={status} className="space-y-3 group">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-sm text-foreground">
                   {statusLabels[status]}
                 </h3>
-                <span className="text-xs text-muted-foreground bg-muted/40 px-2 py-0.5 rounded-full">
-                  {groupedTasks[status].length}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground bg-muted/40 px-2 py-0.5 rounded-full">
+                    {groupedTasks[status].length}
+                  </span>
+                  {onAddTask && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => onAddTask(status)}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
               </div>
               <Droppable droppableId={status}>
                 {(provided, snapshot) => (

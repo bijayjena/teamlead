@@ -9,6 +9,8 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import TasksPage from "./pages/TasksPage";
 import TeamPage from "./pages/TeamPage";
+import TeamMembersPage from "./pages/TeamMembersPage";
+import InvitePage from "./pages/InvitePage";
 import StakeholdersPage from "./pages/StakeholdersPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -34,9 +36,11 @@ const App = () => {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/invite/:token" element={<InvitePage />} />
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
               <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
               <Route path="/team" element={<ProtectedRoute><TeamPage /></ProtectedRoute>} />
+              <Route path="/team-members" element={<ProtectedRoute><TeamMembersPage /></ProtectedRoute>} />
               <Route path="/stakeholders" element={<ProtectedRoute><StakeholdersPage /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
               <Route path="/meetings" element={<ProtectedRoute><MeetingNotesPage /></ProtectedRoute>} />

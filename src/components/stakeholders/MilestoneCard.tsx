@@ -1,15 +1,17 @@
-import { Milestone as MilestoneType } from '@/types';
+import { Milestone as MilestoneType, Task } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Calendar, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { format, differenceInDays, isPast } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { RiskAnalysisButton } from './RiskAnalysisButton';
 
 interface MilestoneCardProps {
   milestone: MilestoneType;
+  tasks?: Task[];
 }
 
-export const MilestoneCard = ({ milestone }: MilestoneCardProps) => {
+export const MilestoneCard = ({ milestone, tasks = [] }: MilestoneCardProps) => {
   const daysUntil = differenceInDays(milestone.targetDate, new Date());
   const isOverdue = isPast(milestone.targetDate) && milestone.progress < 100;
   const isComplete = milestone.progress === 100;
@@ -69,6 +71,12 @@ export const MilestoneCard = ({ milestone }: MilestoneCardProps) => {
             <p className="text-sm text-capacity-medium">
               ⚠️ {milestone.riskNotes}
             </p>
+          </div>
+        )}
+
+        {tasks.length > 0 && (
+          <div className="pt-2 border-t">
+            <RiskAnalysisButton milestone={milestone} tasks={tasks} />
           </div>
         )}
       </CardContent>

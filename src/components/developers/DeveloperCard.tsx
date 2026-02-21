@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Developer } from '@/types';
+import { Developer, Task } from '@/types';
 import { CapacityBar } from '@/components/shared/CapacityBar';
 import { SkillBadge } from '@/components/shared/SkillBadge';
+import { TaskRecommendations } from './TaskRecommendations';
 import { getCapacityPercentage, getCapacityStatus } from '@/data/mockData';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -16,9 +17,11 @@ import { useDeleteDeveloper } from '@/hooks/useDevelopers';
 interface DeveloperCardProps {
   developer: Developer;
   compact?: boolean;
+  availableTasks?: Task[];
+  onAssignTask?: (taskId: string, developerId: string) => void;
 }
 
-export const DeveloperCard = ({ developer, compact = false }: DeveloperCardProps) => {
+export const DeveloperCard = ({ developer, compact = false, availableTasks = [], onAssignTask }: DeveloperCardProps) => {
   const [editOpen, setEditOpen] = useState(false);
   const deleteDeveloper = useDeleteDeveloper();
   const capacityPercentage = getCapacityPercentage(developer);
@@ -128,11 +131,20 @@ export const DeveloperCard = ({ developer, compact = false }: DeveloperCardProps
           </div>
 
           {/* Skills */}
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {developer.skills.map((skill) => (
               <SkillBadge key={skill} skill={skill} size="sm" />
             ))}
           </div>
+
+          {/* AI Recommendations */}
+          {availableTasks.length > 0 && onAssignTask && (
+            <TaskRecommendations
+              developer={developer}
+              availableTasks={availableTasks}
+              onAssignTask={onAssignTask}
+            />
+          )}
         </CardContent>
       </Card>
 

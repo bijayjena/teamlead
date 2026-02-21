@@ -233,6 +233,93 @@ export type Database = {
         }
         Relationships: []
       }
+      teams: {
+        Row: {
+          id: string
+          name: string
+          owner_id: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          owner_id: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          owner_id?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          id: string
+          team_id: string
+          user_id: string
+          role: Database["public"]["Enums"]["app_role"]
+          joined_at: string
+        }
+        Insert: {
+          id?: string
+          team_id: string
+          user_id: string
+          role?: Database["public"]["Enums"]["app_role"]
+          joined_at?: string
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          user_id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          joined_at?: string
+        }
+        Relationships: []
+      }
+      team_invitations: {
+        Row: {
+          id: string
+          team_id: string
+          email: string
+          role: Database["public"]["Enums"]["app_role"]
+          invited_by: string
+          token: string
+          status: string
+          expires_at: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          team_id: string
+          email: string
+          role?: Database["public"]["Enums"]["app_role"]
+          invited_by: string
+          token: string
+          status?: string
+          expires_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          email?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          invited_by?: string
+          token?: string
+          status?: string
+          expires_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -244,6 +331,18 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      accept_invitation: {
+        Args: {
+          invitation_token: string
+        }
+        Returns: Json
+      }
+      decline_invitation: {
+        Args: {
+          invitation_token: string
+        }
+        Returns: Json
       }
     }
     Enums: {

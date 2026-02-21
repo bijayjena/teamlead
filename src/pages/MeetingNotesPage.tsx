@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Plus, Save, X, Trash2, Clock, FileText, Sparkles, Loader2 } from 'lucide-react';
 import { useMeetingNotes, useCreateMeetingNote, useSaveMeetingNote, useDeleteMeetingNote, MeetingNote } from '@/hooks/useMeetingNotes';
 import { useCreateTask } from '@/hooks/useTasks';
-import { supabase } from '@/integrations/supabase/client';
+import { generateTasksFromText } from '@/lib/geminiService';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { PriorityBadge } from '@/components/shared/PriorityBadge';
@@ -73,19 +73,19 @@ const MeetingNotesPage = () => {
     }
     setGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('generate-tasks', {
-        body: { title: note.title, content: note.content },
-      });
-      if (error) throw error;
-      const tasks: GeneratedTask[] = (data.tasks || []).map((t: any) => ({
+      const result = await generateTasksFromText(note.content, 'meeting notes');
+      
+      const tasks: GeneratedTask[] = (result.tasks || []).map((t: any) => ({
         ...t,
         skills: t.skills || [],
         selected: true,
       }));
+      
       if (tasks.length === 0) {
         toast.info('No actionable tasks found in these notes.');
         return;
       }
+      
       setGeneratedTasks(tasks);
       setShowTasksDialog(true);
     } catch (e: any) {

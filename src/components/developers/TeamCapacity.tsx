@@ -1,13 +1,15 @@
-import { Developer } from '@/types';
+import { Developer, Task } from '@/types';
 import { DeveloperCard } from './DeveloperCard';
 import { getCapacityPercentage } from '@/data/mockData';
 import { Users, AlertTriangle, TrendingUp } from 'lucide-react';
 
 interface TeamCapacityProps {
   developers: Developer[];
+  tasks?: Task[];
+  onAssignTask?: (taskId: string, developerId: string) => void;
 }
 
-export const TeamCapacity = ({ developers }: TeamCapacityProps) => {
+export const TeamCapacity = ({ developers, tasks = [], onAssignTask }: TeamCapacityProps) => {
   const overloadedCount = developers.filter(
     (dev) => getCapacityPercentage(dev) >= 90
   ).length;
@@ -65,7 +67,12 @@ export const TeamCapacity = ({ developers }: TeamCapacityProps) => {
       {/* Developer Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {developers.map((developer) => (
-          <DeveloperCard key={developer.id} developer={developer} />
+          <DeveloperCard 
+            key={developer.id} 
+            developer={developer} 
+            availableTasks={tasks}
+            onAssignTask={onAssignTask}
+          />
         ))}
       </div>
     </div>

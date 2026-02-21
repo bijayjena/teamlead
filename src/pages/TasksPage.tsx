@@ -2,6 +2,7 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import { TaskCapture } from '@/components/tasks/TaskCapture';
 import { TaskList } from '@/components/tasks/TaskList';
+import { AddTaskDialog } from '@/components/tasks/AddTaskDialog';
  import { useTasks, useUpdateTask, useCreateTask } from '@/hooks/useTasks';
  import { useDevelopers } from '@/hooks/useDevelopers';
  import { Skeleton } from '@/components/ui/skeleton';
@@ -17,21 +18,35 @@ const TasksPage = () => {
    const updateTask = useUpdateTask();
    const createTask = useCreateTask();
   const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban');
+  const [addTaskDialogOpen, setAddTaskDialogOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<TaskStatus>('backlog');
  
    const isLoading = tasksLoading || developersLoading;
 
-  const handleTaskCapture = (content: string) => {
-    console.log('Captured:', content);
-     // Create a basic task from captured content
-     createTask.mutate({
-       title: content.split('\n')[0] || content,
-       description: content,
-       effort: 1,
-       priority: 'medium',
-       skills: [],
-       status: 'backlog',
-       dependencies: [],
-     });
+  const handleTasksGenerated = (generatedTasks: any[]) => {
+    generatedTasks.forEach((task) => {
+      createTask.mutate({
+        title: task.title,
+        description: task.description || '',
+        effort: 1,
+        priority: task.priority || 'medium',
+        skills: task.skills || [],
+        status: 'backlog',
+        dependencies: [],
+      });
+    });
+  };
+
+  const handleAddTask = (status: TaskStatus) => {
+    setSelectedStatus(status);
+    setAddTaskDialogOpen(true);
+  };
+
+  const handleCreateTask = (taskData: any) => {
+    createTask.mutate(
+      { ...taskData, dependencies: [] },
+      { onSuccess: () => toast.success('Task created successfully') }
+    );
   };
 
   const handleTaskStatusChange = (taskId: string, newStatus: TaskStatus) => {
@@ -120,7 +135,7 @@ const TasksPage = () => {
         </div>
 
         {/* Quick Capture */}
-        <TaskCapture onSubmit={handleTaskCapture} />
+        <TaskCapture onTasksGenerated={handleTasksGenerated} />
 
         {/* Task Board/List */}
         <TaskList 
@@ -130,6 +145,15 @@ const TasksPage = () => {
           onTaskStatusChange={handleTaskStatusChange}
           onTaskAssign={handleTaskAssign}
           onTaskUpdate={handleTaskUpdate}
+          onAddTask={handleAddTask}
+        />
+
+        {/* Add Task Dialog */}
+        <AddTaskDialog
+          open={addTaskDialogOpen}
+          onOpenChange={setAddTaskDialogOpen}
+          onSubmit={handleCreateTask}
+          defaultStatus={selectedStatus}
         />
       </div>
     </MainLayout>

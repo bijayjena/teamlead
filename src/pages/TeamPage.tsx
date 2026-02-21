@@ -1,12 +1,23 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import { TeamCapacity } from '@/components/developers/TeamCapacity';
 import { useDevelopers } from '@/hooks/useDevelopers';
+import { useTasks, useUpdateTask } from '@/hooks/useTasks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 import { AddDeveloperDialog } from '@/components/developers/AddDeveloperDialog';
+import { toast } from 'sonner';
 
 const TeamPage = () => {
    const { data: developers = [], isLoading } = useDevelopers();
+   const { data: tasks = [] } = useTasks();
+   const updateTask = useUpdateTask();
+
+   const handleAssignTask = (taskId: string, developerId: string) => {
+     updateTask.mutate(
+       { id: taskId, assigneeId: developerId },
+       { onSuccess: () => toast.success('Task assigned successfully') }
+     );
+   };
  
    if (isLoading) {
      return (
@@ -46,7 +57,7 @@ const TeamPage = () => {
 
         {/* Team Capacity Grid */}
          {developers.length > 0 ? (
-           <TeamCapacity developers={developers} />
+           <TeamCapacity developers={developers} tasks={tasks} onAssignTask={handleAssignTask} />
          ) : (
            <Card>
              <CardContent className="py-12 text-center">

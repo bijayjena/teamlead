@@ -11,18 +11,21 @@ import {
   Zap,
   LogOut,
   User,
-  BookOpen
+  BookOpen,
+  UserPlus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { InvitationNotifications } from '@/components/team/InvitationNotifications';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
-  { path: '/team', label: 'Team', icon: Users },
+  { path: '/team', label: 'Team Capacity', icon: Users },
+  { path: '/team-members', label: 'Team Members', icon: UserPlus },
   { path: '/stakeholders', label: 'Reports', icon: BarChart3 },
   { path: '/meetings', label: 'Meetings', icon: BookOpen },
 ];
@@ -46,7 +49,7 @@ export const Sidebar = () => {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
           {!collapsed && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-1">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <Zap className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -58,6 +61,7 @@ export const Sidebar = () => {
               <Zap className="h-5 w-5 text-primary-foreground" />
             </div>
           )}
+          {!collapsed && <InvitationNotifications />}
         </div>
 
         {/* Navigation */}
