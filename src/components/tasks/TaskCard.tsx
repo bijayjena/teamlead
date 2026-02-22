@@ -246,7 +246,7 @@ export const TaskCard = ({ task, assignee, developers = [], onAssign, onUpdate, 
   return (
     <Card 
       className={cn(
-        "transition-all hover:shadow-md cursor-pointer group",
+        "transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1 cursor-pointer group border-gradient animate-in",
         task.status === 'done' && "opacity-60"
       )}
       onClick={onClick}

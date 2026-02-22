@@ -233,6 +233,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_settings: {
+        Row: {
+          id: string
+          user_id: string
+          active_team_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          active_team_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          active_team_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       teams: {
         Row: {
           id: string
@@ -320,6 +344,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_settings: {
+        Row: {
+          id: string
+          user_id: string
+          active_team_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          active_team_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          active_team_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -341,6 +389,34 @@ export type Database = {
       decline_invitation: {
         Args: {
           invitation_token: string
+        }
+        Returns: Json
+      }
+      get_user_teams: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: {
+          id: string
+          name: string
+          owner_id: string
+          created_at: string
+          updated_at: string
+          role: string
+          is_owner: boolean
+        }[]
+      }
+      create_team_and_set_active: {
+        Args: {
+          team_name: string
+          user_uuid: string
+        }
+        Returns: Json
+      }
+      switch_active_team: {
+        Args: {
+          team_uuid: string
+          user_uuid: string
         }
         Returns: Json
       }

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { useTeams, useTeamMembers, useTeamInvitations } from '@/hooks/useTeams';
+import { useTeams, useTeamMembers, useTeamInvitations, useActiveTeam } from '@/hooks/useTeams';
 import { InviteTeamMemberDialog } from '@/components/team/InviteTeamMemberDialog';
 import { TeamMembersList } from '@/components/team/TeamMembersList';
 import { PendingInvitationsList } from '@/components/team/PendingInvitationsList';
+import { TeamSelector } from '@/components/team/TeamSelector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -11,18 +12,17 @@ import { Users, Mail } from 'lucide-react';
 
 const TeamMembersPage = () => {
   const { data: teams = [], isLoading: teamsLoading } = useTeams();
-  const [selectedTeamId, setSelectedTeamId] = useState<string | undefined>();
+  const { data: activeTeam, isLoading: activeTeamLoading } = useActiveTeam();
 
-  // Use first team by default
-  const currentTeamId = selectedTeamId || teams[0]?.id;
-  const currentTeam = teams.find((t) => t.id === currentTeamId);
+  const currentTeamId = activeTeam?.id;
+  const currentTeam = activeTeam;
 
   const { data: members = [], isLoading: membersLoading } = useTeamMembers(currentTeamId);
   const { data: invitations = [], isLoading: invitationsLoading } = useTeamInvitations(currentTeamId);
 
-  const isLoading = teamsLoading || membersLoading || invitationsLoading;
+  const isLoading = teamsLoading || activeTeamLoading || membersLoading || invitationsLoading;
 
-  if (teamsLoading) {
+  if (teamsLoading || activeTeamLoading) {
     return (
       <MainLayout>
         <div className="space-y-6">
@@ -48,12 +48,33 @@ const TeamMembersPage = () => {
             <p className="text-muted-foreground">Manage your team and invitations</p>
           </div>
           <Card>
-            <CardContent className="py-12 text-center">
+            <CardContent className="py-12 text-center space-y-4">
               <Users className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground mb-2">No team found</p>
-              <p className="text-sm text-muted-foreground">
-                A default team should have been created for you. Please refresh the page.
-              </p>
+              <div>
+                <p className="text-lg font-medium text-foreground mb-2">No teams yet</p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Create your first team to start collaborating
+                </p>
+              </div>
+              <TeamSelector />
+            </CardContent>
+          </Card>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (!currentTeam) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Team Members</h1>
+            <p className="text-muted-foreground">Select a team to manage</p>
+          </div>
+          <Card>
+            <CardContent className="py-12 text-center">
+              <TeamSelector />
             </CardContent>
           </Card>
         </div>
@@ -69,10 +90,15 @@ const TeamMembersPage = () => {
           <div>
             <h1 className="text-2xl font-bold text-foreground">Team Members</h1>
             <p className="text-muted-foreground">
-              Manage your team and invitations for {currentTeam?.name}
+              Manage members and invitations
             </p>
           </div>
-          {currentTeamId && <InviteTeamMemberDialog teamId={currentTeamId} />}
+          <div className="flex items-center gap-3">
+            <TeamSelector />
+            {currentTeamId && currentTeam.isOwner && (
+              <InviteTeamMemberDialog teamId={currentTeamId} />
+            )}
+          </div>
         </div>
 
         {/* Stats */}

@@ -1,98 +1,98 @@
 # teamlead
 
-## Project Overview
+A comprehensive team management and task tracking application with AI-powered features and robust team collaboration capabilities.
 
-A comprehensive application for managing tasks, team members, stakeholders, and milestones with AI-powered features and team collaboration.
+## 🌟 Key Features
 
-## Key Features
+### Task Management
+- Kanban board with drag-and-drop
+- AI-powered task generation from natural language
+- Manual task creation with full details
+- Task assignment and tracking
+- Priority and skill-based organization
 
 ### Team Management
-- **Team Invitations**: Invite members via email with role-based access
-- **Member Management**: View, manage, and remove team members
+- **Multi-team Support**: Create and join multiple teams
+- **Team Switching**: Easy switching between teams
+- **Invitation System**: Email-based invitations with role assignment
+- **Member Management**: Add, remove, and manage team members
 - **Real-time Notifications**: Get notified of pending invitations
-- **Role-based Access**: Admin, Team Lead, and Developer roles
 
-See [TEAM_FEATURES.md](./TEAM_FEATURES.md) for detailed documentation.
+### AI Features
+- **AI Task Generation**: Convert descriptions into structured tasks
+- **Meeting Notes Analysis**: Extract action items from meeting notes
+- **Milestone Risk Analysis**: Get intelligent risk assessments
+- **Smart Task Recommendations**: AI-powered task assignment suggestions
 
-## AI Features
+### Team Capacity
+- Developer workload tracking
+- Capacity visualization
+- Skill management
+- Overload warnings
 
-teamlead includes powerful AI capabilities powered by Google's Gemini API:
+### Reports & Analytics
+- Milestone tracking
+- Progress visualization
+- Export to Excel/CSV
+- Shareable reports
 
-- **AI Task Generation**: Convert natural language descriptions into structured tasks
-- **Meeting Notes Analysis**: Automatically extract action items from meeting notes
-- **Milestone Risk Analysis**: Get intelligent risk assessments for project milestones
-- **Smart Task Recommendations**: AI-powered task assignment suggestions for developers
+## 📚 Documentation
 
-See [AI_FEATURES.md](./AI_FEATURES.md) for detailed documentation.
+- [Setup Guide](./docs/SETUP.md) - Installation and configuration
+- [Features Overview](./docs/FEATURES.md) - Complete feature documentation
+- [AI Features](./docs/AI_FEATURES.md) - AI capabilities and usage
+- [UI Guide](./docs/UI_GUIDE.md) - Design system and animations
 
-## Environment Setup
-
-Create a `.env` file with the following variables:
-
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_key
-VITE_GEMINI_TEAMLEAD_KEY=your_gemini_api_key
-```
-
-## Getting Started
-
-**Prerequisites**
-
-- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-**Local Development**
-
-Clone this repo and install dependencies:
-
-Follow these steps:
+## 🚀 Quick Start
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd teamlead
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Create .env file with your credentials
+# VITE_SUPABASE_URL=your_supabase_url
+# VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_key
+# VITE_GEMINI_TEAMLEAD_KEY=your_gemini_api_key
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Run database migrations (see docs/SETUP.md)
+# Then start the dev server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+For detailed setup instructions including Supabase configuration, see [Setup Guide](./docs/SETUP.md).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🛠️ Tech Stack
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
+- React 18 + TypeScript
 - Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- Supabase (PostgreSQL + Auth)
+- Google Gemini AI
+- shadcn/ui + Tailwind CSS
+- TanStack Query
 
-## Deployment
+## 📦 Database Setup
 
-Build the project for production and deploy to your preferred hosting platform.
+The complete database schema is available in `supabase/migrations/complete_schema.sql`. This single file contains:
+- All table definitions
+- Row Level Security policies
+- Database functions and triggers
+- Indexes for performance
 
-## Can I connect a custom domain to my Lovable project?
+To set up a new Supabase project:
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Run the complete schema: `supabase db push`
+3. Add your Supabase credentials to `.env`
 
-Yes, you can!
+See [Setup Guide](./docs/SETUP.md) for detailed instructions.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🚀 Deployment
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```sh
+npm run build
+```
+
+Deploy the `dist` folder to your preferred hosting platform (Vercel, Netlify, etc.).

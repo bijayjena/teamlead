@@ -20,6 +20,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { InvitationNotifications } from '@/components/team/InvitationNotifications';
+import { TeamSwitcher } from '@/components/team/TeamSwitcher';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -41,28 +42,35 @@ export const Sidebar = () => {
   return (
     <aside 
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen border-r border-border bg-card transition-all duration-300",
+        "fixed left-0 top-0 z-40 h-screen border-r border-border bg-card/95 backdrop-blur-sm transition-all duration-300 ease-in-out",
         collapsed ? "w-16" : "w-64"
       )}
     >
       <div className="flex h-full flex-col">
         {/* Logo */}
-        <div className="flex h-16 items-center justify-between border-b border-border px-4">
+        <div className="flex h-16 items-center justify-between border-b border-border px-4 bg-gradient-to-r from-card to-card/80">
           {!collapsed && (
-            <div className="flex items-center gap-2 flex-1">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <div className="flex items-center gap-2 flex-1 animate-in">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary shadow-lg glow">
                 <Zap className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="font-semibold text-foreground">Team Lead</span>
+              <span className="font-semibold text-foreground text-gradient">Team Lead</span>
             </div>
           )}
           {collapsed && (
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary mx-auto">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary shadow-lg glow mx-auto">
               <Zap className="h-5 w-5 text-primary-foreground" />
             </div>
           )}
           {!collapsed && <InvitationNotifications />}
         </div>
+
+        {/* Team Switcher */}
+        {!collapsed && (
+          <div className="p-3 border-b border-border animate-slide-in-from-top">
+            <TeamSwitcher />
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1 p-3">
@@ -74,15 +82,15 @@ export const Sidebar = () => {
               <Link
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ease-out hover-lift",
                   isActive 
-                    ? "bg-primary/10 text-primary" 
-                    : "text-muted-foreground hover:bg-muted/40 hover:text-foreground",
+                    ? "bg-primary/10 text-primary shadow-sm glow-hover" 
+                    : "text-muted-foreground hover:bg-muted/40 hover:text-foreground hover:shadow-sm",
                   collapsed && "justify-center px-2"
                 )}
               >
                 <Icon className="h-5 w-5 shrink-0" />
-                {!collapsed && <span>{item.label}</span>}
+                {!collapsed && <span className="animate-in">{item.label}</span>}
               </Link>
             );
 
