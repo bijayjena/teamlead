@@ -1,0 +1,26 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Developer -- Your Name
+    Site -- yourdomain.com
+    Twitter -- @teamlead
+    Location -- Your Location
+
+# THANKS
+
+    To all the open source contributors
+
+# TECHNOLOGY COLOPHON
+
+    React 18
+    TypeScript
+    Vite
+    Tailwind CSS
+    Supabase
+    Netlify
+    shadcn/ui
+    Radix UI
+    TanStack Query
+    Google Gemini AI
